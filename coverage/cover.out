@@ -1,4 +1,9 @@
 mode: set
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:19.85,23.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:27.64,29.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:31.70,33.2 1 0
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:35.72,37.2 1 0
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:39.63,41.2 1 0
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:13.53,17.2 1 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:21.63,23.48 2 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:27.2,27.19 1 1
