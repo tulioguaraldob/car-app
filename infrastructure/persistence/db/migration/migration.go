@@ -7,4 +7,5 @@ import (
 
 func Run(db *gorm.DB) {
 	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Car{})
 }

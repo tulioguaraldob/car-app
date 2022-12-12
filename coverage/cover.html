@@ -55,9 +55,13 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/TulioGuaraldoB/car-app/application/userApplication.go (40.0%)</option>
+				<option value="file0">github.com/TulioGuaraldoB/car-app/application/carApplication.go (28.6%)</option>
 				
-				<option value="file1">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (90.9%)</option>
+				<option value="file1">github.com/TulioGuaraldoB/car-app/application/userApplication.go (40.0%)</option>
+				
+				<option value="file2">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go (26.3%)</option>
+				
+				<option value="file3">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (90.9%)</option>
 				
 				</select>
 			</div>
@@ -72,6 +76,57 @@
 		<div id="content">
 		
 		<pre class="file" id="file0" style="display: none">package application
+
+import (
+        "github.com/TulioGuaraldoB/car-app/domain/entity"
+        "github.com/TulioGuaraldoB/car-app/domain/repository"
+)
+
+type ICarApplication interface {
+        GetAllCars() ([]entity.Car, error)
+        GetCarById(carId uint) (*entity.Car, error)
+        GetCarsByBrand(brand string) ([]entity.Car, error)
+        GetCarByLicensePlate(licensePlate string) (*entity.Car, error)
+        CreateCar(car *entity.Car) error
+        DeleteCar(carId uint) error
+}
+
+type carApplication struct {
+        carRepository repository.ICarRepository
+}
+
+func NewCarApplication(carRepository repository.ICarRepository) ICarApplication <span class="cov8" title="1">{
+        return &amp;carApplication{
+                carRepository: carRepository,
+        }
+}</span>
+
+func (a *carApplication) GetAllCars() ([]entity.Car, error) <span class="cov8" title="1">{
+        return a.carRepository.GetAllCars()
+}</span>
+
+func (a *carApplication) GetCarById(carId uint) (*entity.Car, error) <span class="cov0" title="0">{
+        return a.carRepository.GetCarById(carId)
+}</span>
+
+func (a *carApplication) GetCarsByBrand(brand string) ([]entity.Car, error) <span class="cov0" title="0">{
+        return a.carRepository.GetCarsByBrand(brand)
+}</span>
+
+func (a *carApplication) GetCarByLicensePlate(licensePlate string) (*entity.Car, error) <span class="cov0" title="0">{
+        return a.carRepository.GetCarByLicensePlate(licensePlate)
+}</span>
+
+func (a *carApplication) CreateCar(car *entity.Car) error <span class="cov0" title="0">{
+        return a.carRepository.CreateCar(car)
+}</span>
+
+func (a *carApplication) DeleteCar(carId uint) error <span class="cov0" title="0">{
+        return a.carRepository.DeleteCar(carId)
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package application
 
 import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"
@@ -114,7 +169,70 @@ func (a *userApplication) CreateUser(user *entity.User) error <span class="cov0"
 }</span>
 </pre>
 		
-		<pre class="file" id="file1" style="display: none">package persistence
+		<pre class="file" id="file2" style="display: none">package persistence
+
+import (
+        "github.com/TulioGuaraldoB/car-app/domain/entity"
+        "github.com/TulioGuaraldoB/car-app/domain/repository"
+        "gorm.io/gorm"
+)
+
+type carRepository struct {
+        db *gorm.DB
+}
+
+func NewCarRepository(db *gorm.DB) repository.ICarRepository <span class="cov8" title="1">{
+        return &amp;carRepository{
+                db: db,
+        }
+}</span>
+
+func (r *carRepository) GetAllCars() ([]entity.Car, error) <span class="cov8" title="1">{
+        cars := []entity.Car{}
+        if err := r.db.Find(&amp;cars).Error; err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cars, nil</span>
+}
+
+func (r *carRepository) GetCarById(carId uint) (*entity.Car, error) <span class="cov0" title="0">{
+        car := entity.Car{}
+        if err := r.db.First(&amp;car, &amp;carId).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;car, nil</span>
+}
+
+func (r *carRepository) GetCarsByBrand(brand string) ([]entity.Car, error) <span class="cov0" title="0">{
+        cars := []entity.Car{}
+        if err := r.db.Where("brand = ?", &amp;brand).Find(&amp;cars).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return cars, nil</span>
+}
+
+func (r *carRepository) GetCarByLicensePlate(licensePlate string) (*entity.Car, error) <span class="cov0" title="0">{
+        car := entity.Car{}
+        if err := r.db.Where("license_plate = ?", &amp;licensePlate).First(&amp;car).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;car, nil</span>
+}
+
+func (r *carRepository) CreateCar(car *entity.Car) error <span class="cov0" title="0">{
+        return r.db.Create(car).Error
+}</span>
+
+func (r *carRepository) DeleteCar(carId uint) error <span class="cov0" title="0">{
+        return r.db.Where("id = ?", &amp;carId).Delete(&amp;entity.Car{}).Error
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package persistence
 
 import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"

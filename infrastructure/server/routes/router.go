@@ -13,9 +13,11 @@ func GetRoutes() *gin.Engine {
 
 	// Application
 	userApplication := application.NewUserApplication(repositories.IUserRepository)
+	carApplication := application.NewCarApplication(repositories.ICarRepository)
 
 	// Handlers
 	userHandler := interfaces.NewUserHandler(userApplication)
+	carHandler := interfaces.NewCarHandler(carApplication)
 
 	router := gin.Default()
 
@@ -27,6 +29,15 @@ func GetRoutes() *gin.Engine {
 			{
 				user.GET("", userHandler.GetAllUsers)
 				user.GET(":id", userHandler.GetUserById)
+			}
+
+			car := v1.Group("car")
+			{
+				car.GET("", carHandler.GetAllCars)
+				car.GET(":id", carHandler.GetCarById)
+				car.GET("brand/:brand", carHandler.GetCarsByBrand)
+				car.GET("license/:licensePlate", carHandler.GetCarByLicensePlate)
+				car.POST("", carHandler.CreateCar)
 			}
 		}
 	}

@@ -15,6 +15,7 @@ import (
 type Repositories struct {
 	db              *gorm.DB
 	IUserRepository repository.IUserRepository
+	ICarRepository  repository.ICarRepository
 }
 
 type DbConfig struct {
@@ -33,6 +34,7 @@ func NewRepositories() *Repositories {
 	return &Repositories{
 		db:              db,
 		IUserRepository: persistence.NewUserRepository(db),
+		ICarRepository:  persistence.NewCarRepository(db),
 	}
 }
 
