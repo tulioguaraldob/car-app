@@ -1,4 +1,9 @@
 mode: set
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:19.85,23.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:27.64,29.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:31.70,33.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:35.89,37.2 1 1
+github.com/TulioGuaraldoB/car-app/application/userApplication.go:39.63,41.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:21.81,25.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:27.61,29.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:31.70,33.2 1 1
@@ -6,11 +11,6 @@ github.com/TulioGuaraldoB/car-app/application/carApplication.go:35.77,37.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:39.89,41.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:43.59,45.2 1 1
 github.com/TulioGuaraldoB/car-app/application/carApplication.go:47.54,49.2 1 1
-github.com/TulioGuaraldoB/car-app/application/userApplication.go:19.85,23.2 1 1
-github.com/TulioGuaraldoB/car-app/application/userApplication.go:27.64,29.2 1 1
-github.com/TulioGuaraldoB/car-app/application/userApplication.go:31.70,33.2 1 1
-github.com/TulioGuaraldoB/car-app/application/userApplication.go:35.72,37.2 1 1
-github.com/TulioGuaraldoB/car-app/application/userApplication.go:39.63,41.2 1 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go:13.62,17.2 1 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go:19.60,21.47 2 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go:25.2,25.18 1 1
@@ -33,5 +33,7 @@ github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:2
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:28.69,30.57 2 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:34.2,34.18 1 1
 github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:30.57,32.3 1 1
-github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:37.71,39.2 1 0
-github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:41.62,43.2 1 1
+github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:37.88,40.21 1 1
+github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:44.2,44.18 1 1
+github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:40.21,42.3 1 1
+github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go:47.62,49.2 1 1

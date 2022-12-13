@@ -79,16 +79,16 @@ func (mr *MockIUserRepositoryMockRecorder) GetUser(userId interface{}) *gomock.C
 }
 
 // GetUserByCredentials mocks base method.
-func (m *MockIUserRepository) GetUserByCredentials() (*entity.User, error) {
+func (m *MockIUserRepository) GetUserByCredentials(user *entity.User) (*entity.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserByCredentials")
+	ret := m.ctrl.Call(m, "GetUserByCredentials", user)
 	ret0, _ := ret[0].(*entity.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetUserByCredentials indicates an expected call of GetUserByCredentials.
-func (mr *MockIUserRepositoryMockRecorder) GetUserByCredentials() *gomock.Call {
+func (mr *MockIUserRepositoryMockRecorder) GetUserByCredentials(user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByCredentials", reflect.TypeOf((*MockIUserRepository)(nil).GetUserByCredentials))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByCredentials", reflect.TypeOf((*MockIUserRepository)(nil).GetUserByCredentials), user)
 }

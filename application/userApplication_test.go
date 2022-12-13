@@ -107,7 +107,7 @@ func TestGetUserByCredentialsApplication(t *testing.T) {
 			description: "Should return no error on get user",
 			setMocks: func(mir *mock.MockIUserRepository) {
 				mir.EXPECT().
-					GetUserByCredentials().
+					GetUserByCredentials(&mockUser).
 					Return(&mockUser, nil)
 			},
 		},
@@ -124,7 +124,7 @@ func TestGetUserByCredentialsApplication(t *testing.T) {
 
 			// Act
 			userApplication := application.NewUserApplication(mur)
-			_, err := userApplication.GetUserByCredentials()
+			_, err := userApplication.GetUserByCredentials(&mockUser)
 
 			// Assert
 			if err != nil {

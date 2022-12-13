@@ -16,11 +16,23 @@ type UserRequest struct {
 	Password  string `json:"password"`
 }
 
+type Credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func UserToResponse(user *entity.User) *UserResponse {
 	return &UserResponse{
 		ID:        user.ID,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Email:     user.Email,
+	}
+}
+
+func CredentialsToUser(credentials *Credentials) *entity.User {
+	return &entity.User{
+		Email:    credentials.Email,
+		Password: credentials.Password,
 	}
 }

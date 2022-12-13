@@ -75,3 +75,34 @@ func (h *userHandler) GetUserById(ctx *gin.Context) {
 	userRes := dto.UserToResponse(user)
 	ctx.JSON(http.StatusOK, userRes)
 }
+
+func (h *userHandler) Login(ctx *gin.Context) {
+	credentialsReq := new(dto.Credentials)
+	if err := ctx.ShouldBindJSON(credentialsReq); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	userReq := dto.CredentialsToUser(credentialsReq)
+	user, err := h.userApplication.GetUserByCredentials(userReq)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, gin.H{
+				"error": err.Error(),
+			})
+
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
+}

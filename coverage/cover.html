@@ -61,7 +61,7 @@
 				
 				<option value="file2">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go (100.0%)</option>
 				
-				<option value="file3">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (90.9%)</option>
+				<option value="file3">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -136,7 +136,7 @@ import (
 type IUserApplication interface {
         GetAllUsers() ([]entity.User, error)
         GetUser(userId uint) (*entity.User, error)
-        GetUserByCredentials() (*entity.User, error)
+        GetUserByCredentials(user *entity.User) (*entity.User, error)
         CreateUser(user *entity.User) error
 }
 
@@ -160,8 +160,8 @@ func (a *userApplication) GetUser(userId uint) (*entity.User, error) <span class
         return a.userRepository.GetUser(userId)
 }</span>
 
-func (a *userApplication) GetUserByCredentials() (*entity.User, error) <span class="cov8" title="1">{
-        return a.userRepository.GetUserByCredentials()
+func (a *userApplication) GetUserByCredentials(user *entity.User) (*entity.User, error) <span class="cov8" title="1">{
+        return a.userRepository.GetUserByCredentials(user)
 }</span>
 
 func (a *userApplication) CreateUser(user *entity.User) error <span class="cov8" title="1">{
@@ -268,9 +268,15 @@ func (r *userRepository) GetUser(userId uint) (*entity.User, error) <span class=
         <span class="cov8" title="1">return user, nil</span>
 }
 
-func (r *userRepository) GetUserByCredentials() (*entity.User, error) <span class="cov0" title="0">{
-        return nil, nil
-}</span>
+func (r *userRepository) GetUserByCredentials(user *entity.User) (*entity.User, error) <span class="cov8" title="1">{
+        if err := r.db.Where("email = ? AND password = ?", &amp;user.Email, &amp;user.Password).
+                First(&amp;user).
+                Error; err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return user, nil</span>
+}
 
 func (r *userRepository) CreateUser(user *entity.User) error <span class="cov8" title="1">{
         return r.db.Create(user).Error

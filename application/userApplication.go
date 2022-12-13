@@ -8,7 +8,7 @@ import (
 type IUserApplication interface {
 	GetAllUsers() ([]entity.User, error)
 	GetUser(userId uint) (*entity.User, error)
-	GetUserByCredentials() (*entity.User, error)
+	GetUserByCredentials(user *entity.User) (*entity.User, error)
 	CreateUser(user *entity.User) error
 }
 
@@ -32,8 +32,8 @@ func (a *userApplication) GetUser(userId uint) (*entity.User, error) {
 	return a.userRepository.GetUser(userId)
 }
 
-func (a *userApplication) GetUserByCredentials() (*entity.User, error) {
-	return a.userRepository.GetUserByCredentials()
+func (a *userApplication) GetUserByCredentials(user *entity.User) (*entity.User, error) {
+	return a.userRepository.GetUserByCredentials(user)
 }
 
 func (a *userApplication) CreateUser(user *entity.User) error {

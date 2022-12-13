@@ -34,8 +34,14 @@ func (r *userRepository) GetUser(userId uint) (*entity.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) GetUserByCredentials() (*entity.User, error) {
-	return nil, nil
+func (r *userRepository) GetUserByCredentials(user *entity.User) (*entity.User, error) {
+	if err := r.db.Where("email = ? AND password = ?", &user.Email, &user.Password).
+		First(&user).
+		Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (r *userRepository) CreateUser(user *entity.User) error {
