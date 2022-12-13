@@ -30,6 +30,15 @@ func UserToResponse(user *entity.User) *UserResponse {
 	}
 }
 
+func RequestToUser(req *UserRequest) *entity.User {
+	return &entity.User{
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Email:     req.Email,
+		Password:  req.Password,
+	}
+}
+
 func CredentialsToUser(credentials *Credentials) *entity.User {
 	return &entity.User{
 		Email:    credentials.Email,

@@ -106,3 +106,28 @@ func (h *userHandler) Login(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, user)
 }
+
+func (h *userHandler) Register(ctx *gin.Context) {
+	userReq := new(dto.UserRequest)
+	if err := ctx.ShouldBindJSON(userReq); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	user := dto.RequestToUser(userReq)
+	if err := h.userApplication.CreateUser(user); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "user registered successfully!",
+		"user": userReq,
+	})
+}

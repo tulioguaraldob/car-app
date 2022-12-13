@@ -131,6 +131,7 @@ func (a *carApplication) DeleteCar(carId uint) error <span class="cov8" title="1
 import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"
         "github.com/TulioGuaraldoB/car-app/domain/repository"
+        "github.com/TulioGuaraldoB/car-app/utils/encrypt"
 )
 
 type IUserApplication interface {
@@ -165,6 +166,9 @@ func (a *userApplication) GetUserByCredentials(user *entity.User) (*entity.User,
 }</span>
 
 func (a *userApplication) CreateUser(user *entity.User) error <span class="cov8" title="1">{
+        password := encrypt.HashToSHA256(user.Password)
+        user.Password = password
+
         return a.userRepository.CreateUser(user)
 }</span>
 </pre>

@@ -4,10 +4,6 @@ services:
 
   db:
     image: mysql
-   
-
-
-
     environment:
       MYSQL_ROOT_PASSWORD: teste
       MYSQL_PASSWORD: teste
@@ -16,21 +12,3 @@ services:
 
     ports:
       - '3306:3306'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

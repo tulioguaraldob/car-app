@@ -3,6 +3,7 @@ package application
 import (
 	"github.com/TulioGuaraldoB/car-app/domain/entity"
 	"github.com/TulioGuaraldoB/car-app/domain/repository"
+	"github.com/TulioGuaraldoB/car-app/utils/encrypt"
 )
 
 type IUserApplication interface {
@@ -37,5 +38,8 @@ func (a *userApplication) GetUserByCredentials(user *entity.User) (*entity.User,
 }
 
 func (a *userApplication) CreateUser(user *entity.User) error {
+	password := encrypt.HashToSHA256(user.Password)
+	user.Password = password
+
 	return a.userRepository.CreateUser(user)
 }

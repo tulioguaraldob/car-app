@@ -30,6 +30,7 @@ func GetRoutes() *gin.Engine {
 				user.GET("", userHandler.GetAllUsers)
 				user.GET(":id", userHandler.GetUserById)
 				user.POST("login", userHandler.Login)
+				user.POST("register", userHandler.Register)
 			}
 
 			car := v1.Group("car")
