@@ -10,13 +10,11 @@ type userRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) *userRepository {
+func NewUserRepository(db *gorm.DB) repository.IUserRepository {
 	return &userRepository{
 		db: db,
 	}
 }
-
-var _ repository.IUserRepository = &userRepository{}
 
 func (r *userRepository) GetAllUsers() ([]entity.User, error) {
 	users := []entity.User{}

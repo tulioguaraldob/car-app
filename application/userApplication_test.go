@@ -58,3 +58,120 @@ func TestGetAllUsersApplication(t *testing.T) {
 		})
 	}
 }
+
+func TestGetUserApplication(t *testing.T) {
+	mockUser := entity.User{}
+	faker.Struct(&mockUser)
+
+	tests := []userApplicationTest{
+		{
+			description: "Should return no error on get user",
+			setMocks: func(mir *mock.MockIUserRepository) {
+				mir.EXPECT().
+					GetUser(mockUser.ID).
+					Return(&mockUser, nil)
+			},
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.description, func(t *testing.T) {
+			// Assert
+			controller := gomock.NewController(t)
+			defer controller.Finish()
+
+			mur := mock.NewMockIUserRepository(controller)
+			testCase.setMocks(mur)
+
+			// Act
+			userApplication := application.NewUserApplication(mur)
+			_, err := userApplication.GetUser(mockUser.ID)
+
+			// Assert
+			if err != nil {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.Nil(t, err)
+		})
+	}
+}
+
+func TestGetUserByCredentialsApplication(t *testing.T) {
+	mockUser := entity.User{}
+	faker.Struct(&mockUser)
+
+	tests := []userApplicationTest{
+		{
+			description: "Should return no error on get user",
+			setMocks: func(mir *mock.MockIUserRepository) {
+				mir.EXPECT().
+					GetUserByCredentials().
+					Return(&mockUser, nil)
+			},
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.description, func(t *testing.T) {
+			// Assert
+			controller := gomock.NewController(t)
+			defer controller.Finish()
+
+			mur := mock.NewMockIUserRepository(controller)
+			testCase.setMocks(mur)
+
+			// Act
+			userApplication := application.NewUserApplication(mur)
+			_, err := userApplication.GetUserByCredentials()
+
+			// Assert
+			if err != nil {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.Nil(t, err)
+		})
+	}
+}
+
+func TestCreateUserApplication(t *testing.T) {
+	mockUser := entity.User{}
+	faker.Struct(&mockUser)
+
+	tests := []userApplicationTest{
+		{
+			description: "Should return no error on get user",
+			setMocks: func(mir *mock.MockIUserRepository) {
+				mir.EXPECT().
+					CreateUser(&mockUser).
+					Return(nil)
+			},
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.description, func(t *testing.T) {
+			// Assert
+			controller := gomock.NewController(t)
+			defer controller.Finish()
+
+			mur := mock.NewMockIUserRepository(controller)
+			testCase.setMocks(mur)
+
+			// Act
+			userApplication := application.NewUserApplication(mur)
+			err := userApplication.CreateUser(&mockUser)
+
+			// Assert
+			if err != nil {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.Nil(t, err)
+		})
+	}
+}
