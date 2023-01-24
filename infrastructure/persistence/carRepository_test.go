@@ -7,6 +7,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/TulioGuaraldoB/car-app/domain/entity"
 	"github.com/TulioGuaraldoB/car-app/infrastructure/persistence"
+	"github.com/TulioGuaraldoB/car-app/infrastructure/persistence/mock"
 	faker "github.com/brianvoe/gofakeit"
 	"github.com/stretchr/testify/assert"
 )
@@ -55,7 +56,7 @@ func TestGetAllCarsRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WillReturnRows(rows)
 
@@ -112,7 +113,7 @@ func TestGetCarByIdRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WithArgs(mockCar.ID).WillReturnRows(rows)
 
@@ -169,7 +170,7 @@ func TestGetCarsByBrandRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WithArgs(mockCar.Brand).WillReturnRows(rows)
 
@@ -226,7 +227,7 @@ func TestGetCarByLicensePlateRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WithArgs(mockCar.LicensePlate).WillReturnRows(rows)
 
@@ -263,7 +264,7 @@ func TestCreateCarRepository(t *testing.T) {
 			faker.Struct(&mockCar)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectBegin()
 			sqlMock.ExpectExec(query).
@@ -304,7 +305,7 @@ func TestDeleteCarRepository(t *testing.T) {
 			faker.Struct(&mockCar)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectBegin()
 			sqlMock.ExpectExec(query).WillReturnResult(sqlmock.NewResult(1, 1))

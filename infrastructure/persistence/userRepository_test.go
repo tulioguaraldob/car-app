@@ -1,40 +1,20 @@
 package persistence_test
 
 import (
-	"log"
 	"regexp"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/TulioGuaraldoB/car-app/domain/entity"
 	"github.com/TulioGuaraldoB/car-app/infrastructure/persistence"
+	"github.com/TulioGuaraldoB/car-app/infrastructure/persistence/mock"
 	faker "github.com/brianvoe/gofakeit"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 type userRepositoryTest struct {
 	description   string
 	expectedQuery string
-}
-
-func mockDb() (*gorm.DB, sqlmock.Sqlmock) {
-	mock, sqlMock, _ := sqlmock.New()
-
-	dialector := mysql.New(mysql.Config{
-		DSN:                       "sqlmock_db_0",
-		DriverName:                "mysql",
-		Conn:                      mock,
-		SkipInitializeWithVersion: true,
-	})
-
-	dbMock, err := gorm.Open(dialector)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return dbMock, sqlMock
 }
 
 func TestGetAllUsersRepository(t *testing.T) {
@@ -76,7 +56,7 @@ func TestGetAllUsersRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WillReturnRows(rows)
 
@@ -133,7 +113,7 @@ func TestGetUserByIdRepository(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).
 				WithArgs(mockUser.ID).
@@ -192,7 +172,7 @@ func TestGetUserByCredentials(t *testing.T) {
 			)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectQuery(query).WillReturnRows(rows)
 
@@ -229,7 +209,7 @@ func TestCreateUserRepository(t *testing.T) {
 			faker.Struct(&mockUser)
 
 			query := regexp.QuoteMeta(testCase.expectedQuery)
-			dbMock, sqlMock := mockDb()
+			dbMock, sqlMock := mock.MockDatabase()
 
 			sqlMock.ExpectBegin()
 
