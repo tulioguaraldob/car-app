@@ -11,6 +11,7 @@ type User struct {
 	FirstName string `gorm:"size:125"`
 	LastName  string `gorm:"size:150"`
 	Email     string `gorm:"size:125;unique"`
+	Username  string `gorm:"size:100"`
 	Password  string `gorm:"size:100"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

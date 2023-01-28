@@ -12,9 +12,8 @@ import (
 )
 
 type userApplicationTest struct {
-	description    string
-	setMocks       func(*mock.MockIUserRepository)
-	expectedUserId uint
+	description string
+	setMocks    func(*mock.MockIUserRepository)
 }
 
 func TestGetAllUsersApplication(t *testing.T) {

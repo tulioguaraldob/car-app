@@ -13,11 +13,12 @@ type UserRequest struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
+	Username  string `json:"username"`
 	Password  string `json:"password"`
 }
 
 type Credentials struct {
-	Email    string `json:"email"`
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -35,13 +36,14 @@ func RequestToUser(req *UserRequest) *entity.User {
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
+		Username:  req.Username,
 		Password:  req.Password,
 	}
 }
 
 func CredentialsToUser(credentials *Credentials) *entity.User {
 	return &entity.User{
-		Email:    credentials.Email,
+		Username: credentials.Username,
 		Password: credentials.Password,
 	}
 }

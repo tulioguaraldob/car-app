@@ -57,11 +57,15 @@
 				
 				<option value="file0">github.com/TulioGuaraldoB/car-app/application/carApplication.go (100.0%)</option>
 				
-				<option value="file1">github.com/TulioGuaraldoB/car-app/application/userApplication.go (100.0%)</option>
+				<option value="file1">github.com/TulioGuaraldoB/car-app/application/crossApplication.go (100.0%)</option>
 				
-				<option value="file2">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go (100.0%)</option>
+				<option value="file2">github.com/TulioGuaraldoB/car-app/application/userApplication.go (100.0%)</option>
 				
-				<option value="file3">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (100.0%)</option>
+				<option value="file3">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/carRepository.go (100.0%)</option>
+				
+				<option value="file4">github.com/TulioGuaraldoB/car-app/infrastructure/persistence/userRepository.go (100.0%)</option>
+				
+				<option value="file5">github.com/TulioGuaraldoB/car-app/infrastructure/service/crossService.go (76.3%)</option>
 				
 				</select>
 			</div>
@@ -129,6 +133,37 @@ func (a *carApplication) DeleteCar(carId uint) error <span class="cov8" title="1
 		<pre class="file" id="file1" style="display: none">package application
 
 import (
+        "github.com/TulioGuaraldoB/car-app/infrastructure/dto"
+        "github.com/TulioGuaraldoB/car-app/infrastructure/service"
+)
+
+type ICrossApplication interface {
+        Register(userRequest *dto.UserRequest) error
+        Login(credentialsRequest *dto.Credentials) (*string, error)
+}
+
+type crossApplication struct {
+        crossService service.ICrossService
+}
+
+func NewCrossApplication(crossService service.ICrossService) ICrossApplication <span class="cov8" title="1">{
+        return &amp;crossApplication{
+                crossService: crossService,
+        }
+}</span>
+
+func (a *crossApplication) Register(userRequest *dto.UserRequest) error <span class="cov8" title="1">{
+        return a.crossService.Register(userRequest)
+}</span>
+
+func (a *crossApplication) Login(credentialsRequest *dto.Credentials) (*string, error) <span class="cov8" title="1">{
+        return a.crossService.Login(credentialsRequest)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package application
+
+import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"
         "github.com/TulioGuaraldoB/car-app/domain/repository"
         "github.com/TulioGuaraldoB/car-app/utils/encrypt"
@@ -173,7 +208,7 @@ func (a *userApplication) CreateUser(user *entity.User) error <span class="cov8"
 }</span>
 </pre>
 		
-		<pre class="file" id="file2" style="display: none">package persistence
+		<pre class="file" id="file3" style="display: none">package persistence
 
 import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"
@@ -236,7 +271,7 @@ func (r *carRepository) DeleteCar(carId uint) error <span class="cov8" title="1"
 }</span>
 </pre>
 		
-		<pre class="file" id="file3" style="display: none">package persistence
+		<pre class="file" id="file4" style="display: none">package persistence
 
 import (
         "github.com/TulioGuaraldoB/car-app/domain/entity"
@@ -285,6 +320,101 @@ func (r *userRepository) GetUserByCredentials(user *entity.User) (*entity.User, 
 func (r *userRepository) CreateUser(user *entity.User) error <span class="cov8" title="1">{
         return r.db.Create(user).Error
 }</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package service
+
+import (
+        "bytes"
+        "encoding/json"
+        "fmt"
+        "io"
+        "net/http"
+
+        "github.com/TulioGuaraldoB/car-app/config/env"
+        "github.com/TulioGuaraldoB/car-app/infrastructure/dto"
+)
+
+type ICrossService interface {
+        Register(userRequest *dto.UserRequest) error
+        Login(credentialsRequest *dto.Credentials) (*string, error)
+}
+
+type crossService struct {
+        httpClient http.Client
+}
+
+func NewCrossService(httpClient http.Client) ICrossService <span class="cov8" title="1">{
+        return &amp;crossService{
+                httpClient: httpClient,
+        }
+}</span>
+
+func (s *crossService) Register(userRequest *dto.UserRequest) error <span class="cov8" title="1">{
+        crossUrl := fmt.Sprintf("%s/api/v1/user/register", env.Env.CrossroadsUrl)
+        userRequestBuffer, err := BindUserRequest(userRequest)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">req, err := http.NewRequest(http.MethodPost, crossUrl, userRequestBuffer)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">res, err := s.httpClient.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">if res.StatusCode != http.StatusOK </span><span class="cov8" title="1">{
+                errMessage := fmt.Errorf("failed to register user on cross-roads. %v", res)
+                return errMessage
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *crossService) Login(credentialsRequest *dto.Credentials) (*string, error) <span class="cov8" title="1">{
+        crossUrl := fmt.Sprintf("%s/api/v1/user/login", env.Env.CrossroadsUrl)
+        userRequestBuffer, err := BindUserRequest(credentialsRequest)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">req, err := http.NewRequest(http.MethodPost, crossUrl, userRequestBuffer)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">res, err := s.httpClient.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">if res.StatusCode != http.StatusOK </span><span class="cov8" title="1">{
+                errMessage := fmt.Errorf("failed to login. %v", res)
+                return nil, errMessage
+        }</span>
+
+        <span class="cov8" title="1">resBody, err := io.ReadAll(res.Body)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">parsedResBody := fmt.Sprintf("%v", string(resBody))
+        return &amp;parsedResBody, nil</span>
+}
+
+func BindUserRequest(userRequest any) (io.Reader, error) <span class="cov8" title="1">{
+        userRequestJSON, err := json.Marshal(userRequest)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">userRequestBuffer := bytes.NewBuffer(userRequestJSON)
+        return userRequestBuffer, nil</span>
+}
 </pre>
 		
 		</div>
